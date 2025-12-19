@@ -1,15 +1,17 @@
 <?php
+
 require_once 'PHPUnit/Framework.php';
-require_once __DIR__.'/blocks/AllTests.php';
-require_once __DIR__.'/helpers/AllTests.php';
+require_once __DIR__ . '/blocks/AllTests.php';
+require_once __DIR__ . '/helpers/AllTests.php';
 
-class AllTests {
+class AllTests
+{
+    public static function suite()
+    {
+        $suite = new PHPUnit_Framework_TestSuite();
+        $suite->addTest(Blocks_AllTests::suite());
+        $suite->addTest(Helpers_AllTests::suite());
 
-	public static function suite() {
-		$suite = new PHPUnit_Framework_TestSuite();
-		$suite->addTest(Blocks_AllTests::suite());
-		$suite->addTest(Helpers_AllTests::suite());
-
-		return $suite;
-	}
+        return $suite;
+    }
 }

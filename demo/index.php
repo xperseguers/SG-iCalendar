@@ -2,10 +2,11 @@
 
 require_once('../SG_iCal.php');
 
-function dump_t($x) {
-	echo "<pre>".print_r($x,true)."</pre>";
+function dump_t($x)
+{
+    echo '<pre>' . print_r($x, true) . '</pre>';
 }
-$ICS = "exdate.ics";
+$ICS = 'exdate.ics';
 //echo dump_t(file_get_contents($ICS));
 
 $ical = new SG_iCalReader($ICS);
@@ -14,41 +15,44 @@ $query = new SG_iCal_Query();
 $evts = $ical->getEvents();
 //$evts = $query->Between($ical,strtotime('20100901'),strtotime('20101131'));
 
+$data = [];
+foreach ($evts as $id => $ev) {
+    $jsEvt = [
+        'id' => ($id + 1),
+        'title' => $ev->getProperty('summary'),
+        'start' => $ev->getStart(),
+        'end'   => $ev->getEnd() - 1,
+        'allDay' => $ev->isWholeDay(),
+    ];
 
-$data = array();
-foreach($evts as $id => $ev) {
-	$jsEvt = array(
-		"id" => ($id+1),
-		"title" => $ev->getProperty('summary'),
-		"start" => $ev->getStart(),
-		"end"   => $ev->getEnd()-1,
-		"allDay" => $ev->isWholeDay()
-	);
+    if (isset($ev->recurrence)) {
+        $count = 0;
+        $start = $ev->getStart();
+        $freq = $ev->getFrequency();
+        if ($freq->firstOccurrence() == $start) {
+            $data[] = $jsEvt;
+        }
+        while (($next = $freq->nextOccurrence($start)) > 0) {
+            if (!$next or $count >= 1000) {
+                break;
+            }
+            $count++;
+            $start = $next;
+            $jsEvt['start'] = $start;
+            $jsEvt['end'] = $start + $ev->getDuration() - 1;
 
-	if (isset($ev->recurrence)) {
-		$count = 0;
-		$start = $ev->getStart();
-		$freq = $ev->getFrequency();
-		if ($freq->firstOccurrence() == $start)
-			$data[] = $jsEvt;
-		while (($next = $freq->nextOccurrence($start)) > 0 ) {
-			if (!$next or $count >= 1000) break;
-			$count++;
-			$start = $next;
-			$jsEvt["start"] = $start;
-			$jsEvt["end"] = $start + $ev->getDuration()-1;
-
-			$data[] = $jsEvt;
-		}
-	} else
-		$data[] = $jsEvt;
+            $data[] = $jsEvt;
+        }
+    } else {
+        $data[] = $jsEvt;
+    }
 
 }
 //echo(date('Ymd\n',$data[0][start]));
 //echo(date('Ymd\n',$data[1][start]));
 //dump_t($data);
 
-$events = "events:".json_encode($data).',';
+$events = 'events:' . json_encode($data) . ',';
 
 ?>
 <html>
@@ -75,7 +79,7 @@ $events = "events:".json_encode($data).',';
 			// US Holidays
 			//events: $.fullCalendar.gcalFeed('http://www.google.com/calendar/feeds/usa__en%40holiday.calendar.google.com/public/basic'),
 
-			<?=$events ?>
+			<?= $events ?>
 
 			eventClick: function(event) {
 				// opens events in a popup window

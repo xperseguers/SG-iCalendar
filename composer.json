@@ -2,6 +2,7 @@
     "name": "minmb/sg-icalendar",
     "description": "A PHP5 OOP iCalendar parser",
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "~3.91.2",
         "phpunit/phpunit": "3.7.8"
     },
     "minimum-stability": "stable",
@@ -21,5 +22,9 @@
     ],
     "autoload": {
         "classmap": ["SG_iCal.php"]
+    },
+    "scripts": {
+        "cs": "php-cs-fixer fix -v --dry-run --config .php-cs-fixer.php",
+        "cs-fix": "php-cs-fixer fix -v --config .php-cs-fixer.php"
     }
 }
