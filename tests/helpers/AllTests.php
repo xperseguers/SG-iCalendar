@@ -1,8 +1,8 @@
 <?php
 require_once 'PHPUnit/Framework.php';
-require_once dirname(__FILE__).'/FreqTest.php';
-require_once dirname(__FILE__).'/RecurrenceTest.php';
-require_once dirname(__FILE__).'/DurationTest.php';
+require_once __DIR__.'/FreqTest.php';
+require_once __DIR__.'/RecurrenceTest.php';
+require_once __DIR__.'/DurationTest.php';
 
 class Helpers_AllTests {
 

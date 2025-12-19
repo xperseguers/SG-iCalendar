@@ -18,7 +18,7 @@ class SG_iCal_VTimeZone {
 	 * Constructs a new SG_iCal_VTimeZone
 	 */
 	public function __construct( $data ) {
-		require_once dirname(__FILE__).'/../helpers/SG_iCal_Freq.php';
+		require_once __DIR__.'/../helpers/SG_iCal_Freq.php';
 
 		$this->tzid = $data['tzid'];
 		$this->daylight = $data['daylight'];

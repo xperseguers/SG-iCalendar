@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__).'/../common.php';
+require_once __DIR__.'/../common.php';
 require_once 'PHPUnit/Framework.php';
 
 class VEventTest extends PHPUnit_Framework_TestCase {
