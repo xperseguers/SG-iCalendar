@@ -194,6 +194,6 @@ class SG_iCal_Parser
         $rx .= '|[\xFE-\xFE]......[\x80-\xBF]';
         $rx .= '|^[\x80-\xBF]';
 
-        return  ! (bool)preg_match('!' . $rx . '!', $data);
+        return ! (bool)preg_match('!' . $rx . '!', $data);
     }
 }
