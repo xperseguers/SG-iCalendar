@@ -28,6 +28,9 @@ class SG_iCal_VEvent {
 	protected $laststart;
 	protected $lastend;
 
+	protected $tzid;
+	protected $previous_tz = '';
+
 	public $recurrence; //RRULE
 	public $recurex;    //EXRULE
 	public $excluded;   //EXDATE(s)
@@ -122,7 +125,7 @@ class SG_iCal_VEvent {
 			}
 		}
 
-		if( isset($this->previous_tz) ) {
+		if( $this->previous_tz !== '' ) {
 			date_default_timezone_set($this->previous_tz);
 		}
 
@@ -262,8 +265,8 @@ class SG_iCal_VEvent {
 	 */
 	protected function setLineTimeZone(SG_iCal_Line $line) {
 		if( isset($line['tzid']) ) {
-			if (!isset($this->previous_tz)) {
-				$this->previous_tz = @ date_default_timezone_get();
+			if ($this->previous_tz === '') {
+				$this->previous_tz = date_default_timezone_get();
 			}
 			$this->tzid = $line['tzid'];
 			date_default_timezone_set($this->tzid);
