@@ -24,6 +24,7 @@ class SG_iCal_VEvent
     protected $summary;
     protected $description;
     protected $location;
+    protected $geo;
 
     protected $laststart;
     protected $lastend;
@@ -118,7 +119,7 @@ class SG_iCal_VEvent
             $this->lastend = $this->laststart + $this->getDuration();
         }
 
-        $imports = ['summary', 'description', 'location'];
+        $imports = ['summary', 'description', 'location', 'geo'];
         foreach ($imports as $import) {
             if (isset($data[$import])) {
                 $this->$import = $data[$import]->getData();
@@ -181,6 +182,15 @@ class SG_iCal_VEvent
     public function getLocation()
     {
         return $this->location;
+    }
+
+    /**
+     * Returns the location (or null if none is given) of the event
+     * @return string
+     */
+    public function getGeo()
+    {
+        return $this->geo;
     }
 
     /**
