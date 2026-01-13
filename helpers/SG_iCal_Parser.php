@@ -65,7 +65,12 @@ class SG_iCal_Parser
         }
 
         if (!$is_utf8) {
-            $content = utf8_encode($content);
+            if (function_exists('mb_convert_encoding')) {
+                $content = mb_convert_encoding($content, 'UTF-8', mb_detect_encoding($content));
+            } else {
+                // Fallback to utf8_encode which assumes ISO-8859-1, deprecated since PHP 8.2
+                $content = utf8_encode($content);
+            }
         }
 
         return $content;
